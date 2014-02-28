@@ -1,9 +1,12 @@
 {
   "name": "firepad",
   "main": "./lib/firepad",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Collaborate on Code using Firepad - by Firebase",
-  "activationEvents": ["firepad:share", "firepad:unshare"],
+  "activationEvents": [
+    "firepad:share",
+    "firepad:unshare"
+  ],
   "repository": "https://github.com/firebase/atom-firepad",
   "license": "MIT",
   "engines": {
