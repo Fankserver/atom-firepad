@@ -1,4 +1,7 @@
+
+Crypto = require 'crypto'
 {View, EditorView} = require 'atom'
+
 Firebase = require 'firebase'
 Firepad = require './firepad-lib'
 
@@ -47,11 +50,12 @@ class FirepadView extends View
 
   confirm: ->
     shareId = @miniEditor.getText()
+    hash = Crypto.createHash('sha256').update(shareId).digest('base64');
     @detach()
-    @ref = new Firebase('https://atom-firepad.firebaseio.com').child(shareId);
+    @ref = new Firebase('https://atom-firepad.firebaseio.com').child(hash);
     @pad = Firepad.fromAtom @ref, atom.workspace.getActiveEditor(), {sv_: Firebase.ServerValue.TIMESTAMP}
     @view = new ShareView()
-    @view.show(shareId)
+    @view.show()
 
   unshare: ->
     @pad.dispose()
