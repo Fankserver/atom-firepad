@@ -1,7 +1,7 @@
 {
   "name": "firepad",
   "main": "./lib/firepad",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Collaborate on Code using Firepad - by Firebase",
   "activationEvents": [
     "firepad:share",
