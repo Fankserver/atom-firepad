@@ -53,9 +53,17 @@ class FirepadView extends View
     hash = Crypto.createHash('sha256').update(shareId).digest('base64');
     @detach()
     @ref = new Firebase('https://atom-firepad.firebaseio.com').child(hash);
-    @pad = Firepad.fromAtom @ref, atom.workspace.getActiveEditor(), {sv_: Firebase.ServerValue.TIMESTAMP}
-    @view = new ShareView()
-    @view.show()
+
+    editor = atom.workspace.getActiveEditor()
+    @ref.once 'value', (snapshot) =>
+      options = {sv_: Firebase.ServerValue.TIMESTAMP}
+      if !snapshot.val() && editor.getText() != ''
+        options.overwrite = true
+      else
+        editor.setText ''
+      @pad = Firepad.fromAtom @ref, editor, options
+      @view = new ShareView()
+      @view.show()
 
   unshare: ->
     @pad.dispose()
