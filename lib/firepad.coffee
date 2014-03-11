@@ -45,6 +45,8 @@ class FirepadView extends View
   share: ->
     if editor = atom.workspace.getActiveEditor()
       atom.workspaceView.append(this)
+      randomString = Math.random().toString(36).slice(2, 10)
+      @miniEditor.setText(randomString)
       @message.text('Enter a string to identify this share session')
       @miniEditor.focus()
 
