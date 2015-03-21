@@ -11,7 +11,8 @@ class ShareView extends View
       @div 'This file is being shared', class: 'message'
 
   show: ->
-    atom.workspaceView.append(this)
+    workspaceView = atom.views.getView(atom.workspace)
+    workspaceView.append(this)
 
 module.exports =
 class FirepadView extends View
@@ -25,8 +26,8 @@ class FirepadView extends View
   detaching: false
 
   initialize: ->
-    atom.workspaceView.command 'firepad:share', => @share()
-    atom.workspaceView.command 'firepad:unshare', => @unshare()
+    atom.commands.add 'firepad:share', => @share()
+    atom.commands.add 'firepad:unshare', => @unshare()
 
     @miniEditor.hiddenInput.on 'focusout', => @detach() unless @detaching
     @on 'core:confirm', => @confirm()
@@ -44,7 +45,8 @@ class FirepadView extends View
 
   share: ->
     if editor = atom.workspace.getActiveEditor()
-      atom.workspaceView.append(this)
+      workspaceView = atom.views.getView(atom.workspace)
+      workspaceView.append(this)
       randomString = Math.random().toString(36).slice(2, 10)
       @miniEditor.setText(randomString)
       @message.text('Enter a string to identify this share session')
