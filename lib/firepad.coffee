@@ -13,8 +13,7 @@ class ShareView extends View
       @div 'This file is being shared', class: 'message'
 
   show: ->
-    workspaceView = atom.views.getView(atom.workspace)
-    workspaceView.append(this)
+    atom.views.getView(atom.workspace).appendChild(@element);
 
 module.exports =
 class FirepadView extends View
@@ -28,14 +27,13 @@ class FirepadView extends View
   detaching: false
 
   initialize: ->
-    console.log('foo')
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:share': => @share()
     @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:unshare': => @unshare()
 
-    @miniEditor.hiddenInput.on 'focusout', => @detach() unless @detaching
-    @on 'core:confirm', => @confirm()
-    @on 'core:cancel', => @detach()
+    @miniEditor.on 'focusout', => @detach() unless @detaching
+    @subscriptions.add atom.commands.add 'atom-workspace', 'core:confirm': => @confirm()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'core:cancel': => @detach()
 
     @miniEditor.preempt 'textInput', (e) =>
       false unless e.originalEvent.data.match(/[a-zA-Z0-9\-]/)
@@ -48,12 +46,13 @@ class FirepadView extends View
     @detaching = false
 
   share: ->
-    if editor = atom.workspace.getActiveEditor()
-      workspaceView = atom.views.getView(atom.workspace)
-      workspaceView.append(this)
+    if editor = atom.workspace.getActiveTextEditor()
+      atom.views.getView(atom.workspace).appendChild(@element);
+
+      @message.text('Enter a string to identify this share session')
+
       randomString = Math.random().toString(36).slice(2, 10)
       @miniEditor.setText(randomString)
-      @message.text('Enter a string to identify this share session')
       @miniEditor.focus()
 
   confirm: ->
@@ -62,7 +61,7 @@ class FirepadView extends View
     @detach()
     @ref = new Firebase('https://atom-firepad.firebaseio.com').child(hash);
 
-    editor = atom.workspace.getActiveEditor()
+    editor = atom.workspace.getActiveTextEditor()
     @ref.once 'value', (snapshot) =>
       options = {sv_: Firebase.ServerValue.TIMESTAMP}
       if !snapshot.val() && editor.getText() != ''
