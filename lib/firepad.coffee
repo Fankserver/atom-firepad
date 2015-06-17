@@ -1,6 +1,8 @@
 
+{CompositeDisposable} = require 'atom'
+{TextEditorView} = require 'atom-space-pen-views'
 Crypto = require 'crypto'
-{View, EditorView} = require 'atom'
+{View} = require 'space-pen'
 
 Firebase = require 'firebase'
 Firepad = require './firepad-lib'
@@ -20,14 +22,16 @@ class FirepadView extends View
 
   @content: ->
     @div class: 'firepad overlay from-top mini', =>
-      @subview 'miniEditor', new EditorView(mini: true)
+      @subview 'miniEditor', new TextEditorView(mini: true)
       @div class: 'message', outlet: 'message'
 
   detaching: false
 
   initialize: ->
-    atom.commands.add 'firepad:share', => @share()
-    atom.commands.add 'firepad:unshare', => @unshare()
+    console.log('foo')
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:share': => @share()
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:unshare': => @unshare()
 
     @miniEditor.hiddenInput.on 'focusout', => @detach() unless @detaching
     @on 'core:confirm', => @confirm()
