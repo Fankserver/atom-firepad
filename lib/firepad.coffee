@@ -2,26 +2,24 @@
 Crypto = require 'crypto'
 Firebase = require 'firebase'
 Firepad = require './firepad-lib'
-FirepadView = require './firepad-view'
 ShareView = require './share-view'
+ShareSetupView = require './sharesetup-view'
 
 module.exports =
   activate: (state) ->
-    @firepadView = new FirepadView
     @shareview = new ShareView
-
+    @shareSetupView = new ShareSetupView
     @subscriptions = new CompositeDisposable
+
     @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:share': => @share()
-    # @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:unshare': => @unshare()
-    @subscriptions.add @firepadView.onDidConfirm (shareIdentifier) =>
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:unshare': => @unshare()
+
+    @subscriptions.add @shareSetupView.onDidConfirm (shareIdentifier) =>
       @shareIdentifier = shareIdentifier
       @setupShare()
 
   deactivate: ->
     @subscriptions.dispose()
-
-  share: ->
-    @firepadView.share()
 
   setupShare: ->
     hash = Crypto.createHash('sha256').update(@shareIdentifier).digest('base64');
@@ -35,7 +33,11 @@ module.exports =
       else
         editor.setText ''
       @firepad = Firepad.fromAtom @firebase, editor, options
-      @shareview.show()
+      @shareview.show(@shareIdentifier)
+
+  share: ->
+    @shareSetupView.show()
 
   unshare: ->
+    @shareview.detach()
     @firepad.dispose()
