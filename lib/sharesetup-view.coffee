@@ -36,9 +36,8 @@ class FirepadView extends View
     super
     @detaching = false
 
-  share: ->
-    console.log 'share'
-    if editor = atom.workspace.getActiveTextEditor()
+  show: ->
+    if atom.workspace.getActiveTextEditor()
       atom.views.getView(atom.workspace).appendChild(@element);
 
       @message.text('Enter a string to identify this share session')
@@ -49,7 +48,3 @@ class FirepadView extends View
 
   onDidConfirm: (callback) ->
     @emitter.on 'confirm', callback
-
-  unshare: ->
-    @pad.dispose()
-    @view.detach()

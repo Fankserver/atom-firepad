@@ -4,7 +4,9 @@ module.exports =
 class ShareView extends View
   @content: ->
     @div class: 'firepad overlay from-bottom', =>
-      @div 'This file is being shared', class: 'message'
+      @div class: 'message', outlet: 'message'
 
-  show: ->
-    atom.views.getView(atom.workspace).appendChild(@element);
+  show: (identifier) ->
+    atom.views.getView(atom.workspace).appendChild(@element)
+
+    @message.text('This file is being shared (' + identifier + ')')
