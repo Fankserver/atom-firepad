@@ -7,7 +7,7 @@
     "firepad:share",
     "firepad:unshare"
   ],
-  "repository": "https://github.com/firebase/atom-firepad",
+  "repository": "https://github.com/Fankserver/atom-firepad",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
