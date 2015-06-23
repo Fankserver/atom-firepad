@@ -22,13 +22,13 @@ module.exports =
     @subscriptions.dispose()
 
   setupShare: ->
-    hash = Crypto.createHash('sha256').update(@shareIdentifier).digest('base64');
-    @firebase = new Firebase('https://atom-firepad.firebaseio.com').child(hash);
+    hash = Crypto.createHash('sha256').update(@shareIdentifier).digest('base64')
+    @firebase = new Firebase('https://atom-firepad.firebaseio.com').child(hash)
 
     editor = atom.workspace.getActiveTextEditor()
     @firebase.once 'value', (snapshot) =>
       options = {sv_: Firebase.ServerValue.TIMESTAMP}
-      if !snapshot.val() && editor.getText() != ''
+      if not snapshot.val() and editor.getText() not ''
         options.overwrite = true
       else
         editor.setText ''
