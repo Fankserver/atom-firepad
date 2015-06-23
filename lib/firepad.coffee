@@ -6,6 +6,11 @@ ShareView = require './share-view'
 ShareSetupView = require './sharesetup-view'
 
 module.exports =
+  config:
+    firebaseUrl:
+      type: 'string'
+      default: 'https://atom-firepad.firebaseio.com'
+
   activate: (state) ->
     @shareview = new ShareView
     @shareSetupView = new ShareSetupView
@@ -23,7 +28,7 @@ module.exports =
 
   setupShare: ->
     hash = Crypto.createHash('sha256').update(@shareIdentifier).digest('base64')
-    @firebase = new Firebase('https://atom-firepad.firebaseio.com').child(hash)
+    @firebase = new Firebase(atom.config.get('firepad.firebaseUrl')).child(hash)
 
     editor = atom.workspace.getActiveTextEditor()
     @firebase.once 'value', (snapshot) =>
