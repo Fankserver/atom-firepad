@@ -33,7 +33,7 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     @firebase.once 'value', (snapshot) =>
       options = {sv_: Firebase.ServerValue.TIMESTAMP}
-      if not snapshot.val() and editor.getText() not ''
+      if not snapshot.val() and editor.getText() isnt ''
         options.overwrite = true
       else
         editor.setText ''
