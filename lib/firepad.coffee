@@ -1,7 +1,4 @@
 {CompositeDisposable} = require 'atom'
-Crypto = require 'crypto'
-Firebase = require 'firebase'
-Firepad = require './firepad-lib'
 FirepadShare = require './firepad-share'
 ShareSetupView = require './sharesetup-view'
 
@@ -36,19 +33,6 @@ module.exports =
     @statusBarTile = null
 
   createShare: (shareIdentifier) ->
-    # hash = Crypto.createHash('sha256').update(@shareIdentifier).digest('base64')
-    # @firebase = new Firebase(atom.config.get('firepad.firebaseUrl')).child(hash)
-    #
-    # editor = atom.workspace.getActiveTextEditor()
-    # @firebase.once 'value', (snapshot) =>
-    #   options = {sv_: Firebase.ServerValue.TIMESTAMP}
-    #   if not snapshot.val() and editor.getText() isnt ''
-    #     options.overwrite = true
-    #   else
-    #     editor.setText ''
-    #   @firepad = Firepad.fromAtom @firebase, editor, options
-    #   @shareview.show(@shareIdentifier)
-
     if shareIdentifier
       editor = atom.workspace.getActiveTextEditor()
 
@@ -96,8 +80,6 @@ module.exports =
     @shareSetupView.show()
 
   unshare: ->
-    # @shareview.detach()
-    # @firepad.dispose()
     editor = atom.workspace.getActiveTextEditor()
 
     editorIsShared = false

@@ -38,7 +38,7 @@ class FirepadView extends View
 
   show: ->
     if atom.workspace.getActiveTextEditor()
-      atom.views.getView(atom.workspace).appendChild(@element);
+      atom.views.getView(atom.workspace).appendChild(@element)
 
       @message.text('Enter a string to identify this share session')
 
