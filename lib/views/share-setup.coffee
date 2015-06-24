@@ -4,7 +4,7 @@
 {Emitter} = require 'event-kit'
 
 module.exports =
-class FirepadView extends View
+class ShareSetupView extends View
   @content: ->
     @div class: 'firepad overlay from-top mini', =>
       @subview 'miniEditor', new TextEditorView(mini: true)
@@ -26,9 +26,6 @@ class FirepadView extends View
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'core:cancel': => @detach()
 
-    @miniEditor.preempt 'textInput', (e) =>
-      false unless e.originalEvent.data.match(/[a-zA-Z0-9\-]/)
-
   detach: ->
     return unless @hasParent()
     @detaching = true
@@ -38,7 +35,7 @@ class FirepadView extends View
 
   show: ->
     if atom.workspace.getActiveTextEditor()
-      atom.views.getView(atom.workspace).appendChild(@element);
+      atom.views.getView(atom.workspace).appendChild(@element)
 
       @message.text('Enter a string to identify this share session')
 

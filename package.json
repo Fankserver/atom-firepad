@@ -4,7 +4,6 @@
   "version": "0.4.1",
   "description": "Collaborate on Code using Firepad - by Firebase",
   "activationCommands": {
-    "atom-workspace": [],
     "atom-text-editor": [
       "firepad:share",
       "firepad:unshare"
@@ -20,6 +19,13 @@
     "firebase": "~1.0.5",
     "atom-space-pen-views": "^2.0.3",
     "space-pen": "^5.1.1"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
   },
   "keywords": [
     "firepad",
