@@ -1,5 +1,6 @@
 {View} = require 'atom-space-pen-views'
 
+module.exports =
 class ShareStatusBarView extends View
   @content: ->
     @div class: 'inline-block text-warning', tabindex: -1, =>
@@ -15,5 +16,3 @@ class ShareStatusBarView extends View
 
   hide: ->
     @shareInfo.text ""
-
-module.exports = ShareStatusBarView

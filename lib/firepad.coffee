@@ -1,6 +1,5 @@
 {CompositeDisposable} = require 'atom'
 FirepadShare = require './firepad-share'
-ShareSetupView = require './sharesetup-view'
 
 module.exports =
   config:
@@ -11,7 +10,9 @@ module.exports =
   shareStack: []
 
   activate: (state) ->
-    @shareSetupView = new ShareSetupView
+    ShareSetupView = require './views/share-setup'
+    @shareSetupView ?= new ShareSetupView
+    
     @subscriptions = new CompositeDisposable
 
     @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:share': => @share()

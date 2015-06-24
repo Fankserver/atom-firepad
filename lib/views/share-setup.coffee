@@ -4,7 +4,7 @@
 {Emitter} = require 'event-kit'
 
 module.exports =
-class FirepadView extends View
+class ShareSetupView extends View
   @content: ->
     @div class: 'firepad overlay from-top mini', =>
       @subview 'miniEditor', new TextEditorView(mini: true)

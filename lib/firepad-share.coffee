@@ -4,6 +4,7 @@ Crypto = require 'crypto'
 Firebase = require 'firebase'
 Firepad = require './firepad-lib'
 
+module.exports =
 class FirepadShare
 
   constructor: (@editor, @shareIdentifier) ->
@@ -51,5 +52,3 @@ class FirepadShare
 
   onDidDestroy: (callback) ->
     @emitter.on 'did-destroy', callback
-
-module.exports = FirepadShare
