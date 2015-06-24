@@ -26,9 +26,6 @@ class ShareSetupView extends View
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'core:cancel': => @detach()
 
-    @miniEditor.preempt 'textInput', (e) =>
-      false unless e.originalEvent.data.match(/[a-zA-Z0-9\-]/)
-
   detach: ->
     return unless @hasParent()
     @detaching = true
