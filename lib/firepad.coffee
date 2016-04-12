@@ -17,6 +17,7 @@ module.exports =
 
     @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:share': => @share()
     @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:unshare': => @unshare()
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'firepad:copyid': => @copyid()
 
     @subscriptions.add atom.workspace.observeActivePaneItem => @updateShareView()
 
@@ -91,3 +92,11 @@ module.exports =
 
     if not editorIsShared
       atom.notifications.addError('Pane is not shared')
+
+  copyid: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    for share in @shareStack
+      if share.getEditor() is editor
+        atom.clipboard.write(share.getShareIdentifier())
+        atom.notifications.addInfo("Copy the shareIdentifier \"" + share.getShareIdentifier() + "\" to clipboard.")

@@ -6,7 +6,8 @@
   "activationCommands": {
     "atom-text-editor": [
       "firepad:share",
-      "firepad:unshare"
+      "firepad:unshare",
+      "firepad:copyid"
     ]
   },
   "repository": "https://github.com/Fankserver/atom-firepad",
