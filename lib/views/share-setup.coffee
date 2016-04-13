@@ -21,7 +21,8 @@ class ShareSetupView extends View
 
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-workspace', 'core:confirm': =>
-      @emitter.emit 'confirm', @miniEditor.getText()
+      if @miniEditor.getText() != ''
+        @emitter.emit 'confirm', @miniEditor.getText()
       @detach()
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'core:cancel': => @detach()
@@ -30,7 +31,7 @@ class ShareSetupView extends View
     return unless @hasParent()
     @detaching = true
     @miniEditor.setText('')
-    @emitter.dispose()
+    #@emitter.dispose()
     super
     @detaching = false
 
