@@ -30,6 +30,7 @@ class ShareSetupView extends View
     return unless @hasParent()
     @detaching = true
     @miniEditor.setText('')
+    @emitter.dispose()
     super
     @detaching = false
 
