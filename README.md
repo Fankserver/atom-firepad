@@ -1,5 +1,7 @@
 # atom-firepad
 
+[![Join the chat at https://gitter.im/Fankserver/atom-firepad](https://badges.gitter.im/Fankserver/atom-firepad.svg)](https://gitter.im/Fankserver/atom-firepad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This package for Atom adds collaborative editing support via [Firepad](http://firepad.io).
 Firepad is an OT library that implements collaborative text editing using [Firebase](https://www.firebase.com).
 
