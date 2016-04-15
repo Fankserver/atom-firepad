@@ -2,7 +2,7 @@
 {Emitter} = require 'event-kit'
 Crypto = require 'crypto'
 os = require 'os'
-Firebase = require 'firebase'
+requireUncached = require './utils/requireUncached'
 
 module.exports =
 class FirepadShare
@@ -16,6 +16,7 @@ class FirepadShare
     hash = Crypto.createHash('sha256').update(@shareIdentifier).digest('base64')
     @userId = Math.random().toString(36).slice(2, 10)
 
+    Firebase = requireUncached 'firebase'
     @firebase = new Firebase(atom.config.get('firepad.firebaseUrl')).child(hash)
     @firebaseUsers = @firebase.child('users')
     @firebaseContent = @firebase.child('content')
@@ -71,9 +72,7 @@ class FirepadShare
 
   attachDecoration: (userSnapshot) ->
     # reset markers
-    @markers?.forEach (marker) =>
-      marker.destroy()
-    @markers = []
+    @destroyMarkers()
 
     # attach decorations
     users = userSnapshot.val()
@@ -88,6 +87,11 @@ class FirepadShare
       decoration = @editor.decorateMarker marker,
         type: 'overlay',
         item: @getCursorElement user
+
+  destroyMarkers: ->
+    @markers?.forEach (marker) =>
+      marker.destroy()
+    @markers = []
 
   getCursorElement: (user) ->
     element = document.createElement('div')
@@ -107,10 +111,12 @@ class FirepadShare
     @firebaseCursor.set(event.newBufferPosition)
 
   remove: ->
-    # @subscriptions.dispose()
-    # @emitter.emit 'did-destroy'
     @firebaseUserSelf.remove()
-    atom.notifications.addWarning('The "unshare" function is due dependencies buggy, and wont work. Please close the pane, to stop sharing!')
+    @firebaseUsers.off()
+    @firebaseContent.off()
+    @subscriptions.dispose()
+    @destroyMarkers()
+    @emitter.emit 'did-destroy'
 
   onDidDestroy: (callback) ->
     @emitter.on 'did-destroy', callback
