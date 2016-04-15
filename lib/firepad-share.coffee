@@ -52,15 +52,6 @@ class FirepadShare
     @subscriptions.add @editor.onDidDestroy =>
       @remove()
 
-    # @subscriptions.add @editor.onDidChangeCursorPosition =>
-    #   console.log 'cursor change'
-    #
-    # @subscriptions.add @editor.onDidStopChanging =>
-    #   console.log 'stop change'
-    #
-    # @subscriptions.add @editor.getBuffer().onDidChange =>
-    #   console.log 'change'
-
   getEditor: ->
     @editor
 
