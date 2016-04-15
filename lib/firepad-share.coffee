@@ -3,7 +3,6 @@
 Crypto = require 'crypto'
 os = require 'os'
 Firebase = require 'firebase'
-Firepad = require './firepad-lib'
 
 module.exports =
 class FirepadShare
@@ -32,19 +31,20 @@ class FirepadShare
 
     @firebaseCursor = @firebaseUserSelf.child('pos')
 
-    @firebaseContent.once 'value', (snapshot) =>
-      options =
-        sv_: Firebase.ServerValue.TIMESTAMP
-        userId: @userId
-      if not snapshot.val() and @editor.getText() isnt ''
-        options.overwrite = true
-      else
+    @firebaseContent.on 'value', (snapshot) =>
+      content = snapshot.val() or @editor.getText()
+      if not content
         @editor.setText ''
-      @firepad = Firepad.fromAtom @firebaseContent, @editor, options
-
+      else
+        pos = @editor.getCursorBufferPosition()
+        @editor.setText content
+        @editor.setCursorScreenPosition pos
     #   @shareview.show(@shareIdentifier)
 
   handleEditorEvents: ->
+    @subscriptions.add @editor.onDidStopChanging =>
+      @updateContent()
+
     @subscriptions.add @editor.onDidChangeCursorPosition (event) =>
       @updateCursorPosition(event)
 
@@ -65,6 +65,9 @@ class FirepadShare
 
   getShareIdentifier: ->
     @shareIdentifier
+
+  updateContent: ->
+    @firebaseContent.set(@editor.getText())
 
   attachDecoration: (userSnapshot) ->
     # reset markers
@@ -104,7 +107,6 @@ class FirepadShare
     @firebaseCursor.set(event.newBufferPosition)
 
   remove: ->
-    # @firepad.dispose() # Won't work #4
     # @subscriptions.dispose()
     # @emitter.emit 'did-destroy'
     @firebaseUserSelf.remove()
