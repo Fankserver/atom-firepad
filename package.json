@@ -1,7 +1,7 @@
 {
   "name": "firepad",
   "main": "./lib/firepad",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Collaborate on Code using Firepad - by Firebase",
   "activationCommands": {
     "atom-text-editor": [
