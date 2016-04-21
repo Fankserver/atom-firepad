@@ -89,6 +89,7 @@ module.exports =
       if share.getEditor() is editor
         editorIsShared = true
         share.remove()
+        break
 
     if not editorIsShared
       atom.notifications.addError('Pane is not shared')
