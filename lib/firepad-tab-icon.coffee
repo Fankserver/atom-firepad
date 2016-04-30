@@ -24,6 +24,8 @@ class TabIcon
 
 
   processPath: (path,revert=false) ->
+    unless path?
+        return
     cssElement = @getCssElement path
     unless revert
       tabDivs = atom.views.getView(atom.workspace).querySelectorAll "ul.tab-bar>
