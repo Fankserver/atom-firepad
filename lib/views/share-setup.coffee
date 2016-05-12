@@ -23,6 +23,15 @@ class ShareSetupView extends View
     @subscriptions.add atom.commands.add 'atom-workspace', 'core:confirm': =>
       if @miniEditor.getText() != ''
         @emitter.emit 'confirm', @miniEditor.getText()
+
+        # add share icon on tab
+        ColorTabs = require "../firepad-tab-icon"
+        @colorTabs ?= new ColorTabs
+        textEditor = atom.workspace.getActiveTextEditor()
+        @colorTabs.processPath textEditor.getPath(), false
+
+        atom.notifications.addInfo("Share the file.")
+
       @detach()
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'core:cancel': => @detach()

@@ -4,6 +4,7 @@ Crypto = require 'crypto'
 os = require 'os'
 requireUncached = require './utils/requireUncached'
 
+
 module.exports =
 class FirepadShare
 

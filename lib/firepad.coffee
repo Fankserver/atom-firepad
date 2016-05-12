@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 FirepadShare = require './firepad-share'
 
+
 module.exports =
   config:
     firebaseUrl:
@@ -22,6 +23,10 @@ module.exports =
     @subscriptions.add atom.workspace.observeActivePaneItem => @updateShareView()
 
     @subscriptions.add @shareSetupView.onDidConfirm (shareIdentifier) => @createShare(shareIdentifier)
+
+    TabIcon = require "./firepad-tab-icon"
+    @tabIcon ?= new TabIcon
+
 
   consumeStatusBar: (statusBar) ->
     ShareStatusBarView = require './views/share-status-bar'
@@ -84,11 +89,15 @@ module.exports =
   unshare: ->
     editor = atom.workspace.getActiveTextEditor()
 
+    #remove the icon
+    @tabIcon.processPath editor.getPath(), true
+
     editorIsShared = false
     for share in @shareStack
       if share.getEditor() is editor
         editorIsShared = true
         share.remove()
+        atom.notifications.addInfo("Unhare the file.")
         break
 
     if not editorIsShared

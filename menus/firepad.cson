@@ -1,0 +1,13 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Firepad'
+      'submenu': [
+        { 'label': 'Share the file', 'command': 'firepad:share' }
+        { 'label': 'Unshare th file', 'command': 'firepad:unshare' }
+        { 'label': 'Copy the ID', 'command': 'firepad:copyid' }
+      ]
+    ]
+  }
+]
